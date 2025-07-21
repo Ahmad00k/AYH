@@ -1,61 +1,85 @@
-const signupForm = document.getElementById("signupForm");
-const verifyForm = document.getElementById("verifyForm");
-const messageDiv = document.getElementById("message");
-
 let generatedCode = "";
+let currentUser = null;
 
-// فۆنکشنی دروستکردنی کۆدی ٥ ژمارەیی
-function generateCode() {
-  return Math.floor(10000 + Math.random() * 90000).toString();
+function showSignUp() {
+  document.getElementById('login-box').classList.add('hidden');
+  document.getElementById('signup-box').classList.remove('hidden');
+  document.getElementById('code-box').classList.add('hidden');
+  document.getElementById('dashboard').classList.add('hidden');
 }
 
-// ناردنی کۆد بۆ API ی Replit ـەکەت
-async function sendCode(email, code) {
-  try {
-    const response = await fetch("https://your-replit-username.your-project-name.repl.co/send-code", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, code }),
-    });
-    const data = await response.json();
-    return data.success;
-  } catch (error) {
-    console.error("هەڵە لە ناردنی کۆد:", error);
-    return false;
+function showLogin() {
+  document.getElementById('login-box').classList.remove('hidden');
+  document.getElementById('signup-box').classList.add('hidden');
+  document.getElementById('code-box').classList.add('hidden');
+  document.getElementById('dashboard').classList.add('hidden');
+}
+
+function sendVerificationCode() {
+  const username = document.getElementById("signupUsername").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  const confirm = document.getElementById("signupConfirm").value;
+
+  if (!username || !email || !password || !confirm) {
+    alert("تکایە هەموو خانەکان پڕبکەوە");
+    return;
   }
-}
-
-// تۆمارکردن - بەکارهێنەری نوێ
-signupForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value.trim();
-
-  if (!email) {
-    messageDiv.textContent = "تکایە ئیمەیڵ دروست بنووسە.";
+  if (password !== confirm) {
+    alert("وشەکان یەکسان نین");
     return;
   }
 
-  generatedCode = generateCode();
+  generatedCode = String(Math.floor(10000 + Math.random() * 89999));
+  console.log("کۆدی تایبەتی نێردرا:", generatedCode);
 
-  const sent = await sendCode(email, generatedCode);
-  if (sent) {
-    messageDiv.textContent = "کۆدی دڵنیاکردن بۆ ئیمەیڵەکەت نێردرا.";
-    signupForm.style.display = "none";
-    verifyForm.style.display = "block";
+  // لێرە دەتوانیت fetch ی POST بۆ Backend بفرێیت بۆ ناردنی ئیمەیڵ بە کۆد
+
+  document.getElementById('signup-box').classList.add('hidden');
+  document.getElementById('code-box').classList.remove('hidden');
+}
+
+function verifyCode() {
+  const inputCode = document.getElementById('verificationCodeInput').value;
+  if (inputCode === generatedCode) {
+    currentUser = document.getElementById("signupUsername").value.trim();
+    localStorage.setItem('user', currentUser);
+    localStorage.setItem('balance', '0.00');
+
+    document.getElementById('code-box').classList.add('hidden');
+    showDashboard();
   } else {
-    messageDiv.textContent = "کێشە هەبوو لە ناردنی کۆدی دڵنیاکردن.";
+    alert("کۆدی دڵنیاکردن هەڵەیە");
   }
-});
+}
 
-// دڵنیاکردنی کۆد
-verifyForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const codeInput = document.getElementById("codeInput").value.trim();
+function showDashboard() {
+  document.getElementById('dashboard').classList.remove('hidden');
+  document.getElementById('userDisplay').textContent = currentUser;
+  document.getElementById('balanceDisplay').textContent = '$' + localStorage.getItem('balance');
+}
 
-  if (codeInput === generatedCode) {
-    messageDiv.textContent = "هەژمارەکەت بە سەرکەوتوویی دروست بوو! 👏";
-    verifyForm.style.display = "none";
+function logoutUser() {
+  localStorage.clear();
+  currentUser = null;
+  showLogin();
+}
+
+function loginUser() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  // لێرە پێویستە Backend هەبێت بۆ دڵنیاکردنی هەژمار و وشەی نهێنی
+  // بۆ نموونەی سادە ئەمە:
+
+  if(email === localStorage.getItem('email') && password === localStorage.getItem('password')){
+    currentUser = localStorage.getItem('user');
+    showDashboard();
   } else {
-    messageDiv.textContent = "کۆدی هەڵەیە، تکایە دووبارە هەوڵبدە.";
+    alert("ئیمەیڵ یان وشەی نهێنی هەڵەیە");
   }
-});
+}
+
+function toggleMode() {
+  document.body.classList.toggle('dark-mode');
+}
