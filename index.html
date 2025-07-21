@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>فانتاسی - وێبسایت</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>خوشەویستم بۆ وێبسایتی فانتاسی</h1>
+
+    <form id="signupForm">
+      <h2>تۆمارکردن (Sign Up)</h2>
+      <input type="email" id="email" placeholder="ئیمەیڵت بنووسە" required />
+      <button type="submit">دروستکردنی هەژمار</button>
+    </form>
+
+    <form id="verifyForm" style="display:none;">
+      <h2>کۆدی دڵنیاکردن بنووسە</h2>
+      <input type="text" id="codeInput" maxlength="5" placeholder="کۆدی ٥ ژمارەی" required />
+      <button type="submit">دڵنیاکردن</button>
+    </form>
+
+    <div id="message"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
