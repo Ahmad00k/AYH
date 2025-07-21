@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>سایتەکەی کوردی - Login و Sign-Up</title>
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- گۆڕینی ڕوونایی -->
+  <button class="toggle-mode" onclick="toggleMode()">🌓 گۆڕینی ڕوونایی</button>
+
+  <!-- Login Box -->
+  <div class="container" id="login-box">
+    <h2>چوونەژوورەوە</h2>
+    <input type="email" id="loginEmail" placeholder="ئیمەیڵ" />
+    <input type="password" id="loginPassword" placeholder="وشەی نهێنی" />
+    <button onclick="loginUser()">چوونەژوورەوە</button>
+    <p>هەژمارت نیە؟ <a href="#" onclick="showSignUp()">تۆماربوون</a></p>
+  </div>
+
+  <!-- Sign-Up Box -->
+  <div class="container hidden" id="signup-box">
+    <h2>تۆماربوون</h2>
+    <input type="text" id="signupUsername" placeholder="ناوی بەکارهێنەر" />
+    <input type="email" id="signupEmail" placeholder="ئیمەیڵ" />
+    <input type="password" id="signupPassword" placeholder="وشەی نهێنی" />
+    <input type="password" id="signupConfirm" placeholder="دوبارە وشەی نهێنی" />
+    <button onclick="sendVerificationCode()">ناردنی کۆدی دڵنیاکردن</button>
+    <p>هەژمارت هەیە؟ <a href="#" onclick="showLogin()">چوونەژوورەوە</a></p>
+  </div>
+
+  <!-- Verification Code Box -->
+  <div class="container hidden" id="code-box">
+    <h2>کۆدی دڵنیاکردن</h2>
+    <input type="text" id="verificationCodeInput" maxlength="5" placeholder="کۆدی ٥ ژمارەیی" />
+    <button onclick="verifyCode()">دڵنیاکردن</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="container hidden" id="dashboard">
+    <h2>بەخێربێیت <span id="userDisplay"></span> 👋</h2>
+    <div class="section">⚙️ ڕێکخستن</div>
+    <div class="section">👤 هەژمارم</div>
+    <div class="section">💰 بەڵانس: <span id="balanceDisplay">$0.00</span></div>
+    <button onclick="logoutUser()">دەرچوون</button>
+  </div>
+
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c665939fae.mp3?filename=click-124467.mp3"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
